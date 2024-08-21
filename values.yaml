@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: m48483/wgwg-nginx
+  repository: m48483/wgwg-front-store
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
@@ -74,11 +74,19 @@ resources: {}
 livenessProbe:
   httpGet:
     path: /
-    port: http
+    port: 80
+  initialDelaySeconds: 30  # Nginx가 시작할 시간을 충분히 주기 위해 딜레이를 추가
+  periodSeconds: 10
+  failureThreshold: 5
+
 readinessProbe:
   httpGet:
     path: /
-    port: http
+    port: 80
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  failureThreshold: 5
+
 
 autoscaling:
   enabled: false
